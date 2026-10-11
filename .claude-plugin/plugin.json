@@ -1,0 +1,13 @@
+{
+  "name": "command-anatomy",
+  "version": "0.1.0",
+  "description": "Dissect any terminal command into an aligned anatomy tree: every program, flag, argument, pipe and redirect labelled, plus its pattern, risk level and macOS/Linux gotchas.",
+  "author": {
+    "name": "Anuraj Sathuluri",
+    "url": "https://github.com/randnumX"
+  },
+  "homepage": "https://github.com/randnumX/command-anatomy",
+  "repository": "https://github.com/randnumX/command-anatomy",
+  "license": "MIT",
+  "keywords": ["shell", "terminal", "cli", "explain", "learning", "bash", "command-line"]
+}

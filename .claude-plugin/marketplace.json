@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "command-anatomy",
+  "description": "See inside any terminal command.",
+  "owner": {
+    "name": "Anuraj Sathuluri",
+    "url": "https://github.com/randnumX"
+  },
+  "plugins": [
+    {
+      "name": "command-anatomy",
+      "description": "Aligned anatomy trees for terminal commands, with pattern, risk and platform gotchas.",
+      "source": "./",
+      "category": "learning"
+    }
+  ]
+}
