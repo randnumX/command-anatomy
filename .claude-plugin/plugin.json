@@ -1,7 +1,7 @@
 {
   "name": "command-anatomy",
-  "version": "0.1.0",
-  "description": "Dissect any terminal command into an aligned anatomy tree: every program, flag, argument, pipe and redirect labelled, plus its pattern, risk level and macOS/Linux gotchas.",
+  "version": "0.2.0",
+  "description": "See inside every terminal command your AI runs: aligned anatomy trees with every program, flag, argument, pipe and redirect labelled, plus risk level and macOS/Linux gotchas. Automatic before each command, or on demand with /explain.",
   "author": {
     "name": "Anuraj Sathuluri",
     "url": "https://github.com/randnumX"
@@ -9,5 +9,18 @@
   "homepage": "https://github.com/randnumX/command-anatomy",
   "repository": "https://github.com/randnumX/command-anatomy",
   "license": "MIT",
-  "keywords": ["shell", "terminal", "cli", "explain", "learning", "bash", "command-line"]
+  "keywords": ["shell", "terminal", "cli", "explain", "learning", "bash", "command-line"],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v python3 >/dev/null 2>&1 || exit 0; python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/auto_explain.py\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
 }

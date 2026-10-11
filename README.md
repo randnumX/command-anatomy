@@ -2,9 +2,10 @@
 
 **See inside any terminal command.**
 
-A Claude Code skill that dissects a command into an aligned anatomy tree - every program, sub-command,
-flag, argument, pipe and redirect labelled - then tells you its general pattern, how risky it is, and the
-macOS/Linux gotchas that bite.
+Whenever your AI agent is about to run a terminal command, it first shows you its **anatomy** - every
+program, sub-command, flag, argument, pipe and redirect labelled - and how risky it is. Ask for any command
+on demand with `/explain` for the full version: aligned tree, general pattern, risk and the macOS/Linux
+gotchas that bite.
 
 ```text
 /explain docker logs --since 10m frigate 2>&1 | grep -i error
@@ -25,6 +26,27 @@ Pattern:   docker logs [--since <time>] [--tail <n>] [-f] <container>
 Risk:      read-only
 Related:   --tail 50 (last 50 lines) · -f (keep following new lines)
 ```
+
+## Automatic, in every agent
+
+Installed, it works in the background: before running a command, the agent draws its anatomy tree in the
+conversation and adds a `Risk:` line - including for retries after an error.
+
+| Agent | How it is switched on | Scope |
+|---|---|---|
+| **Claude Code** | the plugin's start-of-session hook (on by default; `/explain auto off` to stop) | every session |
+| **Codex CLI** | `/explain-init` writes the rule into `~/.codex/AGENTS.md` ([docs](https://developers.openai.com/codex/guides/agents-md)) | global |
+| **GitHub Copilot CLI** | `/explain-init` writes `~/.copilot/copilot-instructions.md` ([docs](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-custom-instructions)) | global |
+| **Copilot in VS Code** | `.github/copilot-instructions.md`, or a user-profile instructions file ([docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)) | repo or global |
+| **Cursor** | `.cursor/rules/command-anatomy.mdc` | repo |
+
+`/explain-init` always does a dry run first and wraps the rule in `<!-- command-anatomy:start/end -->`
+markers, so it never overwrites your own instructions and is easy to remove.
+
+**Honest note:** this is an instruction to the agent, not an enforcement mechanism. In testing, trees
+appeared before every first attempt and 10 of 11 hand-drawn trees were perfectly aligned (one was off by a
+column); retries after errors were the weak spot, which the rule now targets explicitly. For a guaranteed,
+script-aligned tree of any command, use `/explain`.
 
 ## A dangerous one
 
@@ -66,13 +88,15 @@ Then, in any session:
 |---|---|
 | `/explain <command>` | The anatomy of that command |
 | `/explain last` | The anatomy of the last command Claude ran |
+| `/explain auto on\|off\|status` | Switch the automatic before-every-command anatomy |
+| `/explain-init` | Install the automatic rule for Codex, Copilot and Cursor |
 | "what does this command do?" | The skill triggers on its own |
 
 (As a plugin skill it may also appear as `/command-anatomy:explain`.)
 
-## Why the tree is always aligned
+## Why `/explain` trees are always aligned
 
-Language models are bad at counting columns, so hand-drawn trees drift. Here Claude only decides the
+Language models are bad at counting columns, so hand-drawn trees can drift. With `/explain`, Claude only decides the
 **parts** and writes the **labels**; a tiny Python script (`skills/explain/scripts/anatomy.py`, no
 dependencies) places every `│` and `└` at the exact column. Parts are matched left to right, so repeated
 tokens (`grep -i a | grep -i b`) land in the right place.

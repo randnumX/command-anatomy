@@ -4,12 +4,23 @@ description: >
   Dissect any terminal command into an aligned anatomy tree - every program,
   sub-command, flag, argument, pipe and redirect labelled - plus its general
   pattern, risk level, macOS/Linux gotchas and related flags. Use for
-  /explain <command>, /explain last, "what does this command do", "break down
-  this command", "explain these flags".
-argument-hint: "<command> | last"
+  /explain <command>, /explain last, /explain auto on|off|status, "what does
+  this command do", "break down this command", "explain these flags".
+argument-hint: "<command> | last | auto on|off|status"
 ---
 
 # /explain - command anatomy
+
+## Auto-explain switch
+
+`/explain auto on|off|status` controls the automatic anatomy shown before every command Claude runs (the
+plugin's SessionStart hook injects that rule). The setting is `auto` in
+`~/.config/command-anatomy/config.json`; a missing file means on.
+- `off` / `on`: write `{"auto": false}` / `{"auto": true}` (create the folder with `mkdir -p`, keep other
+  keys). It takes effect from the next session; for the current session simply stop or resume showing trees.
+- `status`: report the setting and whether the rule is active in this session. Change nothing.
+
+Everything below is the on-demand `/explain <command>`.
 
 **Never run the command being explained.** Only read documentation about it. The user may be asking
 precisely because the command is dangerous (`rm -rf`, `dd`, `chmod -R`, `curl ... | sh`).
