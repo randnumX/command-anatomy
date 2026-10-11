@@ -94,6 +94,22 @@ Then, in any session:
 
 (As a plugin skill it may also appear as `/command-anatomy:explain`.)
 
+## Not using Claude Code?
+
+The installer works on its own - no Claude Code needed. Read it first, then run it:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/randnumX/command-anatomy/main/scripts/install_rules.py -o install_rules.py
+less install_rules.py                                  # read what it does
+python3 install_rules.py --global --dry-run            # Codex + Copilot CLI, every repository
+python3 install_rules.py --global --yes
+python3 install_rules.py --repo . --yes                # AGENTS.md, Copilot, Cursor for one repository
+python3 install_rules.py --repo . --remove --yes       # undo
+```
+
+It only writes between `<!-- command-anatomy:start -->` and `<!-- command-anatomy:end -->` markers, so
+your own instructions are never touched.
+
 ## Why `/explain` trees are always aligned
 
 Language models are bad at counting columns, so hand-drawn trees can drift. With `/explain`, Claude only decides the
@@ -102,7 +118,7 @@ dependencies) places every `│` and `└` at the exact column. Parts are matche
 tokens (`grep -i a | grep -i b`) land in the right place.
 
 ```bash
-python3 -m unittest discover -s tests     # the renderer's tests
+python3 -m unittest discover -s tests     # renderer and installer tests
 ```
 
 ## What else it does
