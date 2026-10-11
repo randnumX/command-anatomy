@@ -94,6 +94,11 @@ For several trees, pass a JSON list of such objects. Add `--ascii` if the user's
 box-drawing characters. If the script reports `part ... not found`, the part's text does not match the
 command exactly - fix the part, do not edit the output.
 
+**If the renderer cannot run** (no `python3`, or the shell is denied), still draw the tree - never fall back
+to a plain list. Draw it by hand, one line per part, last part first: put `│` at the column where each
+earlier part begins and `└ <label>` where the current part begins. Add one line saying the alignment was not
+machine-checked.
+
 ## 6. After the tree
 
 ```text

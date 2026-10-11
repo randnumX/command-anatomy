@@ -1,6 +1,6 @@
 ---
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 8
+allowed_tools: [Bash, Read, Glob]
 ---
 
-TODO: describe what the agent should do
+How much disk space does this folder use, and how many files are in it?

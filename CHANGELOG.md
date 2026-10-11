@@ -6,8 +6,10 @@ All notable changes to command-anatomy. Format: [Keep a Changelog](https://keepa
 ### Added
 - Automatic anatomy before every command (SessionStart hook in Claude Code; on by default, `/explain auto off`).
 - `scripts/install_rules.py` and `/explain-init`: the same rule for Codex, Copilot, Cursor, Windsurf and Cline, globally or per repo, without Claude Code.
+- Behaviour evals (`evals/`) with and without the plugin; results in the README's Honest numbers.
 - Unit tests for the installer, CI, contributing and security docs.
 ### Changed
+- `/explain` draws the tree by hand when the renderer cannot run, instead of falling back to a list (found by evals).
 - Automatic trees are drawn in the message before the tool call (a renderer round-trip was batched with the command by agents, so the tree never reached the user).
 
 ## [0.1.0] - 2026-10-11

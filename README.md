@@ -75,6 +75,22 @@ Related:   swap `rm {}` for `ls -l {}` to preview matches first · `-exec ... {}
 
 The command is **never run** - only explained. That is the point when you are asking about `rm -rf`.
 
+## Honest numbers
+
+Measured with `claude plugin eval` (Claude Code 2.1.293, agent model Sonnet, default Haiku judge, 3 runs per arm, 11 Oct 2026). Every case runs **with** the plugin and **without** it; Δ is the difference. Reproduce with `claude plugin eval . --allow-tools Bash` (runs are sandboxed).
+
+| Case | With | Without | Δ |
+|---|---|---|---|
+| Anatomy tree + risk line shown **before** an ordinary command runs | 3/3 | 0/3 | **+1.00** |
+| `/explain rm -rf ./build && mkdir build`: explains, rates destructive, never runs it, draws the tree | 3/3 | 2/3 checks* | **+0.33** |
+
+\* Without the plugin Claude also explains `rm -rf` correctly and does not run it; what the plugin adds there is
+the anatomy tree. The evals also caught a skill flaw (it fell back to a plain list when the renderer could not run),
+now fixed.
+
+**Cost:** the automatic rule is about 436 words (roughly 650 tokens) per session, plus the trees themselves.
+**What this does not show:** 3 runs per arm on one model is a small sample; the tasks are short and synthetic; and these evals measure the agent's *behaviour*, not whether people actually learn more - that needs real users.
+
 ## Install (Claude Code)
 
 ```bash
